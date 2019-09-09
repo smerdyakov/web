@@ -1,0 +1,112 @@
+body {
+  background-color: white;
+}
+
+@font-face {
+  font-family: PlayFair;
+  src: url('styles/PlayfairDisplay-Regular.ttf');
+}
+
+@font-face {
+  font-family: PlayFair;
+  src: url('styles/PlayfairDisplay-Bold.ttf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Merriweather;
+  src: url('styles/Merriweather-Regular.ttf');
+}
+
+@font-face {
+  font-family: Merriweather;
+  src: url('styles/Merriweather-Bold.ttf');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: PTMono;
+  src: url('styles/PTMono-Regular.ttf');
+}
+
+.title {
+  font-family: PlayFair;
+}
+
+.comment {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 0px solid gainsboro;
+  box-shadow: 0px 0px 0px grey; 
+  font-size: 15px;
+  font-family: Merriweather;
+}
+
+.comment-content {
+  padding-top: 5px;
+}
+
+.comment-header {
+  color: grey;
+}
+
+.user-tag {
+  font-weight: bold;
+  color: black;
+}
+
+.comment-bar {
+  font-family: Merriweather;
+  position: fixed;
+  width: 1000px;
+  height: 120px;
+  bottom: 0;
+  padding: 0px;
+  background-color: white;
+  margin-left: 100px;
+}
+
+.comment-field {
+  font-family: Merriweather;
+  margin-top: 15px;
+  width: 50%;
+  padding: 5px;
+  border-radius: 0px;
+  border: 1px solid darkgrey;
+  background-color: gainsboro;
+  background-color: white;
+  font-size: 16px;
+}
+
+.comment-button {
+  font-family: Merriweather;
+  background-color: lightgrey;
+  border: none;
+  color: white;
+  padding: 7px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.comment-button:hover {
+  background-color: grey;
+}
+
+.bounding-box {
+  height: calc(vh100);
+  width: 60%;
+  margin-left: 100px;
+  background-color: white;
+  margin-bottom: 120px;
+}
+
+.message {
+  width: 100%;
+  margin: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid gainsboro;
+  background-color: white;
+}
