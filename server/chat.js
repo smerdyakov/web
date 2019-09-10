@@ -31,7 +31,7 @@ function Chatroom() {
   
       //delete websocket from chatroom if not open
       if (other.readyState != WebSocket.OPEN)
-        delete clients[id];
+        delete this.clients[id];
       else
         cont(other, message);
     }

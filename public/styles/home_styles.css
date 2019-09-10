@@ -29,6 +29,24 @@ body {
   src: url('styles/PTMono-Regular.ttf');
 }
 
+.nav-bar {
+  font-family: PlayFair;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: right;
+  height: 30px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  padding: 0px;
+  border-bottom: 1px solid gainsboro;
+  background-color: white;
+}
+
+.nav-contents {
+  margin-right: 50px;
+}
+
 .title {
   font-family: PlayFair;
 }
@@ -95,6 +113,7 @@ body {
 }
 
 .bounding-box {
+  margin-top: 50px;
   height: calc(vh100);
   width: 60%;
   margin-left: 100px;
