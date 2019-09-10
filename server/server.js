@@ -29,7 +29,7 @@ server.listen(port, serverUrl);
 
 server.on('upgrade', (request, wsocket, head) => {
   if (!Utils.authenticate(request)){
-    socket.destroy();
+    wsocket.destroy();
     return;
   }
 
@@ -92,6 +92,7 @@ const authThen = policy => {
 let policies = {
   '/index.html': authThen(serveFile),
   '/index.js'  : authThen(serveFile),
+  '/utils_public.js' : authThen(serveFile),
 
   '/login.html': serveFile,
   '/login.js'  : serveFile,
