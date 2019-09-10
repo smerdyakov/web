@@ -47,14 +47,20 @@ function authLogin (request, response) {
   //TODO: On logout, must erase association
 
   request.on('readable', () => {
-    const { username, password } = JSON.parse(request.read());
-    const cert = { accepted: false, };
-    if (database[username] == password) {
-      cert.cookie = setCookieID(username);
-      cert.accepted = true;
+    info = JSON.parse(request.read());
+    //Added if statement to make sure the request is not null.
+    //We were having an issue with two requests being sent. Kirk 09Sep2019
+    if(info) {
+      const {username, password} = info;
+      const cert = { accepted: false, };
+
+      if (database[username] == password) {
+        cert.cookie = setCookieID(username);
+        cert.accepted = true;
+      }
+      response.write(JSON.stringify(cert));
+      response.end();
     }
-    response.write(JSON.stringify(cert));
-    response.end();
   });
 }
 
@@ -63,8 +69,8 @@ function getRandom () {
   const min = 1,
         max = 100;
   const ids = database.id2username;
-  const helper = () => { 
-    return Math.floor(Math.random() * (max - min + 1)) + min; 
+  const helper = () => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   let rand = helper();
@@ -87,14 +93,14 @@ function getCookieID (request) {
   /*
   Parses request cookies and finds the id
   */
-  const cookies = parseCookies(request); 
+  const cookies = parseCookies(request);
   return cookies['myid'];
 }
 
 function usernameOf (id) {
   /*
   return database.query('username', id);
-  */ 
+  */
   return database.id2username[id];
 }
 
