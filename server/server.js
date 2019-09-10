@@ -25,6 +25,8 @@ const server = http.createServer((request, response) => {
 console.log('Server @ ' + serverUrl + ': ' + port);
 server.listen(port, serverUrl);
 
+/* connecting websocket to server */
+
 server.on('upgrade', (request, wsocket, head) => {
   if (!Utils.authenticate(request)){
     socket.destroy();

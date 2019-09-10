@@ -1,3 +1,5 @@
+const WebSocket = require('ws');
+
 const Utils = require('./utils.js');
 
 /*
@@ -23,16 +25,34 @@ function Client(wsocket, request) {
 
 function Chatroom() {
   this.clients = {};
+  this.broadcastHelper = (message, cont) => {
+    for(let id in this.clients) {
+      const other = this.clients[id].wsocket;
+  
+      //delete websocket from chatroom if not open
+      if (other.readyState != WebSocket.OPEN)
+        delete clients[id];
+      else
+        cont(other, message);
+    }
+  };
+
+  this.broadcast = (message) => {
+    const cont = (wsocket, message) => {
+      const msg = { username: 'CHATROOM', text: message, time: Date(), };
+      wsocket.send(JSON.stringify(msg));
+    }
+    this.broadcastHelper(message, cont);
+  }
+
   this.add = (client) => {
-    //TODO: if client already exists, remove?
     this.clients[client.id] = client;
+    this.broadcast(`${Utils.usernameOf(client.id)} entered the chat.`);
 
     client.broadcast = (message) => {
-      for(let id in this.clients) {
-        //TODO: if other is closed, remove from client list
-        const other = this.clients[id].wsocket;
+      this.broadcastHelper(message, (other, message) => {
         client.send(other, message);
-      }
+      });
     };
   };
 }

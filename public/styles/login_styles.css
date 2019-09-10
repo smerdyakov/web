@@ -7,34 +7,34 @@ body {
 
 @font-face {
   font-family: PlayFair;
-  src: url('styles/PlayfairDisplay-Regular.ttf');
+  src: url('PlayfairDisplay-Regular.ttf');
 }
 
 @font-face {
   font-family: PlayFair;
-  src: url('styles/PlayfairDisplay-Bold.ttf');
+  src: url('PlayfairDisplay-Bold.ttf');
   font-weight: bold;
 }
 
 @font-face {
   font-family: Merriweather;
-  src: url('styles/Merriweather-Regular.ttf');
+  src: url('Merriweather-Regular.ttf');
 }
 
 @font-face {
   font-family: Merriweather;
-  src: url('styles/Merriweather-Bold.ttf');
+  src: url('Merriweather-Bold.ttf');
   font-weight: bold;
 }
 
 @font-face {
   font-family: PTMono;
-  src: url('styles/PTMono-Regular.ttf');
+  src: url('PTMono-Regular.ttf');
 }
 
 @font-face {
   font-family: Modak;
-  src: url('styles/Modak-Regular.ttf');
+  src: url('Modak-Regular.ttf');
 }
 
 #title {
