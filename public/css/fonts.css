@@ -1,0 +1,74 @@
+/* Code */
+@font-face {
+    font-family: 'Hack';
+    src: local('Hack Regular'), url('../fonts/hack/hack-regular.woff2?sha=3114f1256') format('woff2'), url('../fonts/hack/hack-regular.woff?sha=3114f1256') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Block Title */
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Raleway Light'), local('Raleway-Light'), url(../fonts/raleway/light.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Raleway Medium'), local('Raleway-Medium'), url(../fonts/raleway/medium.woff2) format('woff2');
+}
+
+
+/* Text */
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/opensans/Light/OpenSans-Light.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Open Sans Regular'), local('OpenSans-Regular'), url(../fonts/opensans/Regular/OpenSans-Regular.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url(../fonts/opensans/SemiBold/OpenSans-SemiBold.woff2) format('woff2');
+}
+
+/* Text */
+@font-face {
+    font-family: 'Camphor';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Camphor Light'), local('Camphor-Light'), url(../fonts/camphor/300-light.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Camphor';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Camphor Regular'), local('Camphor-Regular'), url(../fonts/camphor/400-regular.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Camphor';
+    font-style: italic;
+    font-weight: 400;
+    src: local('Camphor Regular Italic'), local('Camphor-Regular-italic'), url(../fonts/camphor/400-regular-italic.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Camphor';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Camphor Medium'), local('Camphor-Medium'), url(../fonts/camphor/500-medium.woff2) format('woff2');
+}
+@font-face {
+    font-family: 'Camphor';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Camphor Bold'), local('Camphor-Bold'), url(../fonts/camphor/600-bold.woff2) format('woff2');
+}
