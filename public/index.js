@@ -28,23 +28,25 @@ function send(wsocket, text) {
 }
 
 function formattedTime(dateObj) {
-  const day = dateObj.getDay();
-  const month = dateObj.getMonth();
+
+  const day = dateObj.getDate();
+  const month = dateObj.getMonth() + 1;
   const year = dateObj.getFullYear();
-  const hour = dateObj.getHours()%12;
-  const minute = dateObj.getMinutes();
-  const suffix = dateObj.getHours() > 12 ? 'pm' : 'am';
+  const hour = ((dateObj.getHours() - 1) % 12) + 1 ;
+  const minute = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
+  const suffix = dateObj.getHours() >= 12 ? 'pm' : 'am';
   let timeStr = hour + ':' + minute + suffix;
   timeStr += ' on ' + month + '/' + day + '/' + year;
   return timeStr;
+
 }
 
 function newHeader(user, time) {
   const header = document.createElement('div');
   header.className = 'comment-header';
 
-  const timeStr = formattedTime(new Date(time));
-  header.innerHTML += '<span class=\'user-tag\'>' + user + '</span> '; 
+  const timeStr = formattedTime(new Date(Date.parse(time)));
+  header.innerHTML += '<span class=\'user-tag\'>' + user + '</span> ';
   header.innerHTML += ' - ' + timeStr + '<br>';
   return header;
 }
@@ -59,16 +61,15 @@ function newContent(text) {
 function newComment(user, text, time) {
   const comment = document.createElement('div');
   comment.className = 'comment';
-  
+
   comment.append(newHeader(user, time));
   comment.append(newContent(text));
-  return comment; 
+  return comment;
 }
 
 function post(data) {
   const {username, text, time} = data;
   boundingBox.append(newComment(username, text, time));
-  console.log(username + '(@' + time + ')' + ': ' + text); 
 }
 
 wsocket = connect();
