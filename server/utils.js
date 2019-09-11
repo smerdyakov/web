@@ -13,9 +13,8 @@ Database.query('password', username) = password;
 or something like that
 */
 
-const database = {
-  'user1': 'pass1',
-  'user2': 'pass2',
+var database = {
+  'user1': 'd5f2054240f926d71a63249dc2c019c64a843af72554f0a4b32de0216e5f968d607c461f5744ec399acad5c149412a85b6cac0d036391b48337541e83836af25',
 
   //Stores a username id unique to a particular session
   id2username: {
@@ -53,7 +52,6 @@ function authLogin (request, response) {
     if(info) {
       const {username, password} = info;
       const cert = { accepted: false, };
-
       if (database[username] == password) {
         cert.cookie = setCookieID(username);
         cert.accepted = true;
@@ -119,6 +117,20 @@ function logout (request, response) {
   });
 }
 
+function newUser(request, response) {
+  request.on('readable', () => {
+    const info = JSON.parse(request.read());
+    if(info) {
+      const {username, password} = info;
+      const cert = { accepted: true, };
+      database[username] = password;
+      cert.cookie = setCookieID(username);
+      response.write(JSON.stringify(cert));
+      response.end();
+    }
+  });
+}
+
 Utils = {
   authenticate,
   setCookieID,
@@ -126,6 +138,7 @@ Utils = {
   usernameOf,
   authLogin,
   logout,
+  newUser,
 }
 
 module.exports = Utils;

@@ -1,2 +1,4 @@
 ./server/node_modules/*
+./public/node_modules/*
+./public/package-lock.json
 ./server/package-lock.json

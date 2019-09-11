@@ -44,7 +44,7 @@ wsserver.on('connection', (wsocket, request) => {
   clients.add(client);
 
   wsocket.on('message', (message) => {
-    message = JSON.parse(message); 
+    message = JSON.parse(message);
     client.broadcast(message);
   });
 });
@@ -57,7 +57,7 @@ const logRequest = (request) => {
 
 const sendFile = (filepath, response) => {
   fs.readFile(filepath, 'binary', (err, file) => {
-    if (err) 
+    if (err)
       throw err;
     response.write(file, 'binary');
     response.end();
@@ -81,8 +81,8 @@ const authThen = policy => {
       policy(request, response);
     }
     else
-      policies['default'](request, response); 
-  } 
+      policies['default'](request, response);
+  }
   return authorizedPolicy;
 }
 
@@ -98,6 +98,8 @@ let policies = {
   '/login.js'  : serveFile,
   '/login/auth': Utils.authLogin,
   '/logout'    : Utils.logout,
+
+  '/login/newuser' : Utils.newUser,
 
   '/styles/PlayfairDisplay-Regular.ttf': serveFile,
   '/styles/PlayfairDisplay-Bold.ttf'   : serveFile,
