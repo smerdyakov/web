@@ -47,7 +47,7 @@ function authLogin (request, response) {
   //TODO: On logout, must erase association
 
   request.on('readable', () => {
-    info = JSON.parse(request.read());
+    const info = JSON.parse(request.read());
     //Added if statement to make sure the request is not null.
     //We were having an issue with two requests being sent. Kirk 09Sep2019
     if(info) {
@@ -104,12 +104,28 @@ function usernameOf (id) {
   return database.id2username[id];
 }
 
+function logout (request, response) {
+  request.on('readable', () => {
+    const cookies = parseCookies(request);
+    const id = cookies['myid'];
+    const user = database.id2username[id];
+
+    if (id in database.id2username)
+      delete database.id2username[id];
+
+    console.log('Logged out ' + user);
+    response.write('Logout successful');
+    response.end();
+  });
+}
+
 Utils = {
   authenticate,
   setCookieID,
   getCookieID,
   usernameOf,
   authLogin,
+  logout,
 }
 
 module.exports = Utils;
