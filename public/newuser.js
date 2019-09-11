@@ -1,42 +1,48 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-/*
-Edit this file, then run browserify logincode.js > login.js
-browserify is a npm package that allows me to access the npm package blakejs (a one-way hashing function) on the client-side.
-Kirk 11Sep2019
-*/
-
 const username = document.querySelector('#username');
 const password = document.querySelector('#password');
-const loginMessage = document.querySelector('#loginmessage');
+const password2 = document.querySelector('#password2');
+const name = document.querySelector('#name');
+const email = document.querySelector('#email');
 const enter = document.querySelector('#enter');
-const newUser = document.querySelector('#newuser');
+const statusMessage = document.querySelector('#statusmessage');
 
 var blake = require('blakejs');
 
-username.addEventListener('keyup', (evnt) => {
-  if (evnt.keyCode == 13)
-    sendCredentials();
-});
-
-password.addEventListener('keyup', (evnt) => {
-  if (evnt.keyCode == 13)
-    sendCredentials();
-});
-
 enter.addEventListener('click', (evnt) => {
-  sendCredentials();
+  if(checkInformation()){
+    sendNewUser();
+  }
 });
 
-newUser.addEventListener('click', (evnt) => {
-  window.location.assign('/newuser.html');
-});
+function checkInformation() {
+  if (password.value != password2.value){
+    statusMessage.innerText = 'Passwords do not match.';
+    return false;
+  }
+  else if(password.value.length <=8){
+    statusMessage.innerText = 'Passwords must be more than 8 characters.';
+    return false;
+  }
+  else if(name.value.length==0){
+    statusMessage.innerText = 'Please input your name.';
+    return false;
+  }
+  else if(email.value.length==0){
+    statusMessage.innerText = 'Please input your email.';
+    return false;
+  }
+  return true;
+}
 
-function sendCredentials() {
-  const uname = username.value;
-  const pass = blake.blake2bHex(password.value);
-  const creds = { username: uname, password: pass, };
-
-  fetch('/login/auth', {
+function sendNewUser() {
+  const creds = { username: username.value,
+    hashedpass: blake.blake2bHex(password.value),
+    name: name.value,
+    email: email.value,
+   };
+  statusMessage.innerText = 'Success!';
+  fetch('/newuser/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -47,16 +53,12 @@ function sendCredentials() {
   })
   .then( cert => {
     if (cert.accepted == false) {
-      displayLoginFailure();
+      statusMessage.innerText = 'Username already taken.';
     } else {
       document.cookie = cert.cookie;
       window.location.assign('/index.html');
     }
   });
-}
-
-function displayLoginFailure() {
-  loginMessage.innerText = 'username/password could not be authenticated';
 }
 
 },{"blakejs":4}],2:[function(require,module,exports){

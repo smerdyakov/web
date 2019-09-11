@@ -27,7 +27,7 @@ enter.addEventListener('click', (evnt) => {
 });
 
 newUser.addEventListener('click', (evnt) => {
-  sendNewUser();
+  window.location.assign('/newuser.html');
 });
 
 function sendCredentials() {
@@ -51,26 +51,6 @@ function sendCredentials() {
       document.cookie = cert.cookie;
       window.location.assign('/index.html');
     }
-  });
-}
-
-function sendNewUser() {
-  const uname = username.value;
-  const pass = blake.blake2bHex(password.value);
-  const creds = { username: uname, password: pass, };
-
-  fetch('/login/newuser', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(creds),
-  })
-  .then( response => {
-    return response.json();
-  })
-  .then( cert => {
-      document.cookie = cert.cookie;
-      window.location.assign('/index.html');
   });
 }
 

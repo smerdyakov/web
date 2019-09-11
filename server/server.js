@@ -86,6 +86,14 @@ const authThen = policy => {
   return authorizedPolicy;
 }
 
+const rateLimit = policy => {
+  const ratePolicy = (request, response) => {
+      policy(request, response);
+  }
+  return ratePolicy;
+  //just a placeholder for now
+}
+
 /* server policies */
 //TODO: login.html should redirect to home if auth is possible
 
@@ -99,7 +107,9 @@ let policies = {
   '/login/auth': Utils.authLogin,
   '/logout'    : Utils.logout,
 
-  '/login/newuser' : Utils.newUser,
+  '/newuser.html' : serveFile,
+  '/newuser.js'   : rateLimit(serveFile),
+  '/newuser/add'  : Utils.newUser,
 
   '/styles/PlayfairDisplay-Regular.ttf': serveFile,
   '/styles/PlayfairDisplay-Bold.ttf'   : serveFile,
