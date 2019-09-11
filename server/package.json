@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
-  "author": "",
+  "author": "Tyler Anderson, Kirk Hendricks",
   "license": "ISC",
   "dependencies": {
     "blakejs": "^1.1.0",
