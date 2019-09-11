@@ -63,7 +63,7 @@ uses the same interface already used in utils.js.
 
 *Security*
 utils.js also implements the security procedure, which is as follows.
-username/password are stored in the database as plain text. At login,
+~~username/password are stored in the database as plain text~~. At login,
 the client's username/password entered into the login page is sent to
 the server. If the username/password matches the database, a random id 
 is made for that particular user. This random id is sent as a cookie
@@ -78,6 +78,6 @@ I'm not great at styling things, but I want it to look good. Feel free
 to suggest design changes/font suggestions, etc.
 
 *Functionality*
-In terms of general functionality, there is a ton to do. Logging out,
+In terms of general functionality, there is a ton to do. ~~Logging out~~,
 multiple chatrooms, chatroom creation, switching between chatrooms,
 payment methods (???), video chat (???), are just the start.
