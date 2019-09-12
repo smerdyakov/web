@@ -127,6 +127,7 @@ function newUser(request, response) {
       if(!database[username]){
         const cert = { accepted: true, };
         database[username] = personal;
+        console.log(personal);
         cert.cookie = setCookieID(username);
         response.write(JSON.stringify(cert));
         response.end();

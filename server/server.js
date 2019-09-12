@@ -1,7 +1,8 @@
 const WebSocket = require('ws'),
       http = require('http'),
       path = require('path'),
-      fs = require('fs');
+      fs = require('fs'),
+      browserify = require('browserify');
 
 const Chat = require('./chat.js');
 const Utils = require('./utils.js');
@@ -59,8 +60,14 @@ const sendFile = (filepath, response) => {
   fs.readFile(filepath, 'binary', (err, file) => {
     if (err)
       throw err;
-    response.write(file, 'binary');
-    response.end();
+    if (filepath.split('.').pop() == 'js') {
+      const bundled = browserify(filepath).bundle();
+      bundled.on('error', console.error);
+      bundled.pipe(response);
+    } else {
+      response.write(file, 'binary');
+      response.end();
+    }
   });
 };
 
@@ -100,7 +107,7 @@ const rateLimit = policy => {
 let policies = {
   '/index.html': authThen(serveFile),
   '/index.js'  : authThen(serveFile),
-  '/utils_public.js' : authThen(serveFile),
+  '/public_utils.js' : authThen(serveFile),
 
   '/login.html': serveFile,
   '/login.js'  : serveFile,
