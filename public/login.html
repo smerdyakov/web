@@ -3,6 +3,7 @@
 <head>
   <meta charset='utf-8'>
   <link rel="stylesheet" href="styles/login_styles.css">
+  <script src='./node_modules/@tarp/require/require.min.js'></script>
 </head>
 
 <body>
@@ -23,8 +24,8 @@
       This is a website. Welcome.
     </span>
   </h1>
+  <script>Tarp.require({main: "./login.js"});</script>
 
-  <script src='login.js'></script>
 </body>
 
 </html>

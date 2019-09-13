@@ -10,8 +10,6 @@
   "author": "Tyler Anderson, Kirk Hendricks",
   "license": "ISC",
   "dependencies": {
-    "blakejs": "^1.1.0",
-    "browserify": "^16.5.0",
     "ws": "^7.1.2"
   }
 }

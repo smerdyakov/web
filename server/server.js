@@ -111,6 +111,18 @@ let policies = {
   '/newuser.js'   : rateLimit(serveFile),
   '/newuser/add'  : Utils.newUser,
 
+  '/node_modules/base64-js/base64js.min.js' : serveFile,
+  '/node_modules/base64-js/index.js' : serveFile,
+  '/node_modules/ieee754/index.js' : serveFile,
+  '/node_modules/buffer/index.js' : serveFile,
+  '/node_modules/@tarp/require/require.js' : serveFile,
+  '/node_modules/@tarp/require/utils/boot.js' : serveFile,
+  '/node_modules/@tarp/require/require.min.js' : serveFile,
+  '/node_modules/blakejs/blake2s.js' : serveFile,
+  '/node_modules/blakejs/util.js' : serveFile,
+  '/node_modules/blakejs/index.js' : serveFile,
+  '/node_modules/blakejs/blake2b.js' : serveFile,
+  
   '/styles/PlayfairDisplay-Regular.ttf': serveFile,
   '/styles/PlayfairDisplay-Bold.ttf'   : serveFile,
   '/styles/Merriweather-Regular.ttf'   : serveFile,

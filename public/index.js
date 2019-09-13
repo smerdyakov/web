@@ -44,8 +44,7 @@ function formattedTime(dateObj) {
 function newHeader(user, time) {
   const header = document.createElement('div');
   header.className = 'comment-header';
-
-  const timeStr = formattedTime(new Date(Date.parse(time)));
+  const timeStr = formattedTime(new Date(time));
   header.innerHTML += '<span class=\'user-tag\'>' + user + '</span> ';
   header.innerHTML += ' - ' + timeStr + '<br>';
   return header;
