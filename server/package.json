@@ -10,6 +10,7 @@
   "author": "Tyler Anderson, Kirk Hendricks",
   "license": "ISC",
   "dependencies": {
+    "uuidv5": "^1.0.0",
     "ws": "^7.1.2"
   }
 }

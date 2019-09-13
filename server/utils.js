@@ -12,6 +12,7 @@ Database.query('password', username) = password;
 
 or something like that
 */
+var uuidv5 = require('uuidv5');
 
 var database = {
   //user1, pass1 is default username, password combo
@@ -64,27 +65,17 @@ function authLogin (request, response) {
   });
 }
 
-function getRandom () {
-  /*Placeholder for a real random number generator*/
-  const min = 1,
-        max = 100;
-  const ids = database.id2username;
-  const helper = () => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  let rand = helper();
-  while (rand in ids)
-    rand = helper();
-  return rand;
-}
-
 function setCookieID (username) {
   /*
   Generates a random number cookie for a fresh request
   In the future, could link ID to a persistent profile
   */
-  const id = getRandom();
+  /*
+  Don't use uuidv5 for CSPSRG. It is only designed for unique identifiers for things like cookies. The idea here is to use the username + current time to create the id.
+  Kirk 13Sep2019
+  */
+  var privns = uuidv5('null', username, true);
+  const id = uuidv5(privns, String(Date.now()));
   database.id2username[id] = username;
   return 'myid=' + id;
 }
