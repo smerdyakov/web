@@ -3,6 +3,7 @@
 <head>
   <meta charset='utf-8'>
   <link rel="stylesheet" href="styles/login_styles.css">
+  <script src='./node_modules/@tarp/require/require.min.js'></script>
 </head>
 
 <body>
@@ -23,7 +24,7 @@
     <p class='login-failure' id='statusmessage'></p>
   </div>
 
-  <script src='newuser.js'></script>
+  <script>Tarp.require({main: "./newuser.js"});</script>
 </body>
 
 </html>
