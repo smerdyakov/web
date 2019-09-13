@@ -55,7 +55,7 @@ function authLogin (request, response) {
     if(info) {
       const {username, password} = info;
       const cert = { accepted: false, };
-      if (database[username].hashedpass == password) {
+      if (username in database && database[username].hashedpass == password) {
         cert.cookie = setCookieID(username);
         cert.accepted = true;
       }
