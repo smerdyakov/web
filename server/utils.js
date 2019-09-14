@@ -13,6 +13,7 @@ Database.query('password', username) = password;
 or something like that
 */
 var uuidv5 = require('uuidv5');
+var mysql = require('mysql');
 
 var database = {
   //user1, pass1 is default username, password combo
