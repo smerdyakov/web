@@ -55,30 +55,31 @@ body {
   font-size: 70px;
 }
 
-.login-box {
+.input-box {
   font-family: Merriweather;
   margin: auto;
   margin-top: 70px;
-  width: 600px;
-  height: 290px;  
+  width: 500px;
+  /*height: 290px;  */
   padding: 10px;
   text-align: center;
   background-color: white;
   box-shadow: 2px 2px 5px grey; 
 }
 
-.login-input {
+.input {
   font-family: Merriweather;
-  padding: 20px;
+  font-size: 20px;
+  padding: 10px;
   border: none;
   border-bottom: 1px solid gainsboro;
 }
 
-.login-input:focus {
+.input:focus {
   background-color: gainsboro;
 }
 
-.login-button {
+.button {
   font-family: Merriweather;
   /* red/orange
   background-color: #FF4102;
