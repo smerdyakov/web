@@ -1,5 +1,5 @@
 const WebSocket = require('ws'),
-      http = require('http'),
+      https = require('https'),
       path = require('path'),
       fs = require('fs');
 
@@ -15,9 +15,15 @@ const port = 3000;
 
 wsserver = new WebSocket.Server({ noServer: true });
 
-const server = http.createServer((request, response) => {
+const options = {
+  key: fs.readFileSync("./testSSLcerts/key.pem"),
+  cert: fs.readFileSync("./testSSLcerts/server.crt")
+};
+
+const server = https.createServer(options, (request, response) => {
   logRequest(request);
   const url = sanitize(request.url);
+  response.writeHead(200);
   let policy = url in policies ? policies[url] : policies['default'];
   policy(request, response);
 });
@@ -59,6 +65,7 @@ const sendFile = (filepath, response) => {
   fs.readFile(filepath, 'binary', (err, file) => {
     if (err)
       throw err;
+    response.writeHead(200);
     response.write(file, 'binary');
     response.end();
   });
@@ -122,7 +129,7 @@ let policies = {
   '/node_modules/blakejs/util.js' : serveFile,
   '/node_modules/blakejs/index.js' : serveFile,
   '/node_modules/blakejs/blake2b.js' : serveFile,
-  
+
   '/styles/PlayfairDisplay-Regular.ttf': serveFile,
   '/styles/PlayfairDisplay-Bold.ttf'   : serveFile,
   '/styles/Merriweather-Regular.ttf'   : serveFile,
@@ -134,6 +141,7 @@ let policies = {
 
   'default'    : (request, response) => {
     const filename = path.join(PUBLIC_DIR, '/login.html');
+    response.writeHead(200);
     sendFile(filename, response);
   }
 };

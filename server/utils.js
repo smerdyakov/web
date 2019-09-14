@@ -122,6 +122,7 @@ function newUser(request, response) {
         cert.cookie = setCookieID(username);
         response.write(JSON.stringify(cert));
         response.end();
+        console.log('Created new user ' + username);
       }
       else {
         const cert = {accepted: false, };
