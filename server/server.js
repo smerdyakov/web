@@ -38,7 +38,7 @@ server.on('upgrade', (request, wsocket, head) => {
   });
 });
 
-const clients = new Chat.Chatroom();
+const clients = new Chat.Chatroom('chatroom1');
 wsserver.on('connection', (wsocket, request) => {
   const client = new Chat.Client(wsocket, request);
   clients.add(client);

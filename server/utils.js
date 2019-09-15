@@ -16,13 +16,24 @@ var uuidv5 = require('uuidv5');
 
 var database = {
   //user1, pass1 is default username, password combo
-  'user1': {hashedpass: 'd5f2054240f926d71a63249dc2c019c64a843af72554f0a4b32de0216e5f968d607c461f5744ec399acad5c149412a85b6cac0d036391b48337541e83836af25', name: 'Hambone Fakenamington', email:'ham@fakenaming.ton', }
-  ,
+  'user1': {hashedpass: 'd5f2054240f926d71a63249dc2c019c64a843af72554f0a4b32de0216e5f968d607c461f5744ec399acad5c149412a85b6cac0d036391b48337541e83836af25', name: 'Hambone Fakenamington', email:'ham@fakenaming.ton', },
 
   //Stores a username id unique to a particular session
   id2username: {
   },
 };
+
+function logMessage(chatroomID, message) {
+  if (!(chatroomID in database))
+    database[chatroomID] = []
+  database[chatroomID].push(message);
+};
+
+function loggedMessages(chatroomID) {
+  if (!(chatroomID in database))
+    return [];
+  return database[chatroomID];
+}
 
 function parseCookies (request) {
   //Parses cookies from request
@@ -132,6 +143,8 @@ function newUser(request, response) {
 }
 
 Utils = {
+  logMessage,
+  loggedMessages,
   authenticate,
   setCookieID,
   getCookieID,
