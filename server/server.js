@@ -44,7 +44,7 @@ server.on('upgrade', (request, wsocket, head) => {
   });
 });
 
-const clients = new Chat.Chatroom();
+const clients = new Chat.Chatroom('chatroom1');
 wsserver.on('connection', (wsocket, request) => {
   const client = new Chat.Client(wsocket, request);
   clients.add(client);
@@ -107,7 +107,10 @@ const rateLimit = policy => {
 let policies = {
   '/index.html': authThen(serveFile),
   '/index.js'  : authThen(serveFile),
-  '/utils_public.js' : authThen(serveFile),
+  '/public_utils.js' : authThen(serveFile),
+
+  '/chatroom.html': authThen(serveFile),
+  '/chatroom.js': authThen(serveFile),
 
   '/login.html': serveFile,
   '/login.js'  : serveFile,

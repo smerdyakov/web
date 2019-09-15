@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <link rel="stylesheet" href="styles/home_styles.css">
+  <script src='public_utils.js'></script>
+</head>
+
+<body>
+  <div class='nav-bar' id='navbar'>
+    <div class='nav-contents' id='navcontents'>
+      <a href='/index.html'>Home</a>     
+      <a href='/chatroom.html'>Chatroom</a>
+      <a href='/login.html' onclick='return utils_logout()'>Logout</a>
+    </div>
+  </div>
+
+  <div class='bounding-box' id='boundingbox'>
+    <h1 class='title'> Messages </h1>
+
+    <!-- <input type='text' placeholder='enter comment' id='commentfield'> -->
+  </div>
+
+  <div class='comment-bar' id='commentbar'>
+    <input type='text' class='comment-field' id='commentfield' 
+    placeholder='Enter comment'><br><br>
+    <input type='button' class='comment-button' id='commentbutton' value='Enter'>
+  </div>
+
+  <script src='chatroom.js'></script>
+</body>
+
+</html>
