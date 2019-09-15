@@ -67,9 +67,10 @@ function newComment(user, text, time) {
 }
 
 function atScrollBottom() {
+  const tol = 50;
   const scrollElem = document.scrollingElement;
   const maxHeight = scrollElem.scrollHeight - scrollElem.clientHeight;
-  return scrollElem.scrollTop == maxHeight;
+  return Math.abs(scrollElem.scrollTop - maxHeight) < tol;
 }
 
 function scrollToBottom() {
