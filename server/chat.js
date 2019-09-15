@@ -47,7 +47,7 @@ function Chatroom(id) {
   this.clients = {};
 
   this.broadcast = (message) => {
-    message = makeMessage('CHATROOM', message, Date());
+    message = makeMessage(this.id, message, Date());
     broadcastHelper(this, message);
   }
 

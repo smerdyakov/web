@@ -100,7 +100,10 @@ const rateLimit = policy => {
 let policies = {
   '/index.html': authThen(serveFile),
   '/index.js'  : authThen(serveFile),
-  '/utils_public.js' : authThen(serveFile),
+  '/public_utils.js' : authThen(serveFile),
+
+  '/chatroom.html': authThen(serveFile),
+  '/chatroom.js': authThen(serveFile),
 
   '/login.html': serveFile,
   '/login.js'  : serveFile,
