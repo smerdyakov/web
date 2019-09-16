@@ -3,7 +3,7 @@ const commentButton = document.querySelector('#commentbutton');
 const boundingBox = document.querySelector('#boundingbox');
 
 function connect() {
-  let serverUrl = "ws://" + document.location.hostname + ":3000";
+  let serverUrl = "wss://" + document.location.hostname + ":3000";
 
   wsocket = new WebSocket(serverUrl, "json");
   wsocket.onopen = (evt) => {
