@@ -107,7 +107,7 @@ let policies = {
 
   '/login.html': serveFile,
   '/login.js'  : serveFile,
-  '/login/auth': Utils.authLogin,
+  '/login/auth': Utils.authorizeLogin,
   '/logout'    : Utils.logout,
 
   '/newuser.html' : serveFile,

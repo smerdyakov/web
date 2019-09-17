@@ -10,6 +10,8 @@
   "author": "Tyler Anderson, Kirk Hendricks",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "blakejs": "^1.1.0",
     "uuidv5": "^1.0.0",
     "ws": "^7.1.2"
   }
