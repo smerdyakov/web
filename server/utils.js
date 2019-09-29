@@ -1,12 +1,12 @@
 /*
 The database functions currently being used are:
-database[username] (gets the password associated with the given username)
-database.id2username (gets the set of id/username pairs)
-database.id2username[id] (gets the username associated with the id)
+Database.getHashedPassword(username) (gets the password associated with the given username)
+localDatabase.id2username (gets the set of id/username pairs)
+localDatabase.id2username[id] (gets the username associated with the id)
 
 The new database should implement these functions somehow
 
-const Database = require('./newdatabase.js');
+const Database = require('./database.js');
 Database.query('id', username) = id;
 Database.query('password', username) = password;
 
@@ -31,15 +31,15 @@ function usernameOf(id) {
 }
 
 function logMessage(chatroomID, message) {
-  if (!(chatroomID in database))
-    database[chatroomID] = []
-  database[chatroomID].push(message);
+  if (!(chatroomID in localDatabase))
+    localDatabase[chatroomID] = []
+  localDatabase[chatroomID].push(message);
 };
 
 function loggedMessages(chatroomID) {
-  if (!(chatroomID in database))
+  if (!(chatroomID in localDatabase))
     return [];
-  return database[chatroomID];
+  return localDatabase[chatroomID];
 }
 
 /* cookie handling + auxiliary functions */
