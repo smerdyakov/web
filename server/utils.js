@@ -18,10 +18,16 @@ const uuidv5 = require('uuidv5'),
       blake = require('blakejs'),
       Database = require('./database.js');
 
+/* database + database functions */
+
+const localDatabase = {
+  //Stores an id, username pair unique to a particular session
+  id2username: {
+  },
+};
+
 function usernameOf(id) {
-  Database.getUsernameOfSessionID(id).then( (username) => {
-    return username;
-  });
+  return localDatabase.id2username[id];
 }
 
 function logMessage(chatroomID, message) {
@@ -60,9 +66,8 @@ function setCookieID (username) {
   */
   var privns = uuidv5('null', username, true);
   const id = uuidv5(privns, String(Date.now()));
-  Database.setSessionID(username, id).then( (set) => {
-    return 'myid=' + id;
-  });
+  localDatabase.id2username[id] = username;
+  return 'myid=' + id;
 }
 
 function getCookieID (request) {
@@ -81,10 +86,7 @@ function sendCert(response, accepted, cookie) {
 function authenticate (request) {
   //Check if request has valid cookie
   const id = getCookieID(request);
-  Database.sessionIDExists(id).then( (sessionIDFound) => {
-    console.log(sessionIDFound);
-    return sessionIDFound;
-  });
+  return (id in localDatabase.id2username);
 }
 
 function authorizeLogin (request, response) {
@@ -115,10 +117,11 @@ function logout (request, response) {
     const cookies = parseCookies(request);
     const id = cookies['myid'];
 
-    Database.deleteSessionID(id).then( (deleted) => {
-      response.write('Logout successful');
-      response.end();
-    });
+    if (id in localDatabase.id2username)
+      delete localDatabase.id2username[id];
+
+    response.write('Logout successful');
+    response.end();
   });
 }
 

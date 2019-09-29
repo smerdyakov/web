@@ -29,10 +29,8 @@ CREATE TABLE IF NOT EXISTS `site_backend`.`tbl_users` (
   `Hashed_Password` VARCHAR(100) NOT NULL,
   `Email` VARCHAR(255) NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
-  `Session_ID` VARCHAR(100),
   PRIMARY KEY (`User_ID`),
-  UNIQUE INDEX `SECONDARY` (`Username` ASC),
-  UNIQUE INDEX `TERTIARY` (`Session_ID` ASC))
+  UNIQUE INDEX `SECONDARY` (`Username` ASC))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
