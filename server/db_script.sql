@@ -57,25 +57,10 @@ DROP TABLE IF EXISTS `site_backend`.`tbl_messages` ;
 
 CREATE TABLE IF NOT EXISTS `site_backend`.`tbl_messages` (
   `Message_ID` INT(11) NOT NULL AUTO_INCREMENT,
-  `Sender_ID` INT(11) NOT NULL,
-  `Recipient_ID` INT(11) NOT NULL,
-  `Sent` DATETIME NOT NULL,
-  `Body` TEXT NOT NULL,
+  `Message` JSON NOT NULL,
   `Chatroom_ID` INT(11) NOT NULL,
   PRIMARY KEY (`Message_ID`),
-  UNIQUE INDEX `SECONDARY` (`Sender_ID` ASC, `Recipient_ID` ASC, `Sent` ASC),
-  INDEX `fk_Recipient_User_idx` (`Recipient_ID` ASC),
   INDEX `fk_Chatroom_idx` (`Chatroom_ID` ASC),
-  CONSTRAINT `fk_Recipient_User`
-    FOREIGN KEY (`Recipient_ID`)
-    REFERENCES `site_backend`.`tbl_users` (`User_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Sender_User`
-    FOREIGN KEY (`Sender_ID`)
-    REFERENCES `site_backend`.`tbl_users` (`User_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Chatroom`
     FOREIGN KEY (`Chatroom_ID`)
     REFERENCES `site_backend`.`tbl_chatrooms` (`Chatroom_ID`)
