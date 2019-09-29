@@ -62,10 +62,47 @@ function getHashedPassword(username) {
   });
 }
 
+function chatroomExists(chatroomID) {
+//Checks whether a chatroom exists.
+  var sql =
+    'SELECT EXISTS (' +
+      'SELECT 1 ' +
+      'FROM tbl_chatrooms ' +
+      'WHERE Chatroom = ?' +
+    ') AS Chatroom_Found;';
+  var con = mysql.createConnection(dbConfig);
+  var record;
+
+  return new Promise(function(resolve, reject) {
+    con.query(sql, chatroomID, function(err, results) {
+      if (err) return reject(err);
+      record = results[0];
+      resolve(Boolean(record['Chatroom_Found']));
+    });
+  });
+}
+
+function insertChatroom(chatroomID) {
+//Adds a chatroom to the database.
+  var sql =
+    'INSERT INTO tbl_chatrooms (Chatroom) ' +
+    'VALUES (?);';
+  var con = mysql.createConnection(dbConfig);
+
+  return new Promise(function(resolve, reject) {
+    con.query(sql, chatroomID, function(err, results, fields) {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+}
+
 Database = {
   userExists,
   insertUser,
   getHashedPassword,
+  chatroomExists,
+  insertChatroom,
 }
 
 module.exports = Database;
