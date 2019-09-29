@@ -15,29 +15,13 @@ or something like that
 
 const uuidv5 = require('uuidv5'),
       bcrypt = require('bcrypt'),
-      blake = require('blakejs');
+      blake = require('blakejs'),
+      Database = require('./database.js');
 
-/* database + database functions */
-
-const database = {
-  //user1, pass1 is default username, password combo
-  'user1': {
-    hashedPass: bcrypt.hashSync(blake.blake2bHex('pass1'), 10),
-    name: 'Hambone Fakenamington', 
-    email:'ham@fakenaming.ton', 
-  },
-
-  //Stores an id, username pair unique to a particular session
-  id2username: {
-  },
-};
-
-function makeUserEntry(username, hashedPass, name, email) {
-  database[username] = { hashedPass, name, email, };
-}
-
-function usernameOf (id) {
-  return database.id2username[id];
+function usernameOf(id) {
+  Database.getUsernameOfSessionID(id).then( (username) => {
+    return username;
+  });
 }
 
 function logMessage(chatroomID, message) {
@@ -76,8 +60,9 @@ function setCookieID (username) {
   */
   var privns = uuidv5('null', username, true);
   const id = uuidv5(privns, String(Date.now()));
-  database.id2username[id] = username;
-  return 'myid=' + id;
+  Database.setSessionID(username, id).then( (set) => {
+    return 'myid=' + id;
+  });
 }
 
 function getCookieID (request) {
@@ -96,7 +81,10 @@ function sendCert(response, accepted, cookie) {
 function authenticate (request) {
   //Check if request has valid cookie
   const id = getCookieID(request);
-  return (id in database.id2username);
+  Database.sessionIDExists(id).then( (sessionIDFound) => {
+    console.log(sessionIDFound);
+    return sessionIDFound;
+  });
 }
 
 function authorizeLogin (request, response) {
@@ -106,16 +94,19 @@ function authorizeLogin (request, response) {
     //When request stream closes, it sends a null request - do nothing at close
     if (!info) return;
 
-    if (!(info.username in database)) 
-      sendCert(response, false, null);
-    else {
-      const {username, password} = info;
-      const client = database[username];
-      bcrypt.compare(password, client.hashedPass, (err, match) => {
-        if (err) throw err;
-        sendCert(response, match, match ? setCookieID(username) : null) 
-      });
-    }
+    Database.userExists(info.username).then( (userFound) => {
+      if (!userFound)
+        sendCert(response, false, null);
+      else {
+        const {username, password} = info;
+        Database.getHashedPassword(username).then( (hashedPass) => {
+          bcrypt.compare(password, hashedPass, (err, match) => {
+            if (err) throw err;
+            sendCert(response, match, match ? setCookieID(username) : null)
+          });
+        })
+      }
+    });
   });
 }
 
@@ -124,11 +115,10 @@ function logout (request, response) {
     const cookies = parseCookies(request);
     const id = cookies['myid'];
 
-    if (id in database.id2username)
-      delete database.id2username[id];
-
-    response.write('Logout successful');
-    response.end();
+    Database.deleteSessionID(id).then( (deleted) => {
+      response.write('Logout successful');
+      response.end();
+    });
   });
 }
 
@@ -137,18 +127,22 @@ function newUser(request, response) {
     const info = JSON.parse(request.read());
     if(info) {
       const {username, ...personal} = info;
-      if(!database[username]){
-        //hashCost is a parameter that controls the hash speed
-        //higher hashCost => slower hash => more secure
-        const hashCost = 10;
-        //bcrypt automatically uses a random salt and prepends it to hash
-        bcrypt.hash(personal.hashedpass, hashCost, (err, hash) => {
-          makeUserEntry(username, hash, personal.name, personal.email);
-          sendCert(response, true, setCookieID(username));
-        });
-      }
-      else
-        sendCert(response, false, null);
+      Database.userExists(username).then( (userFound) => {
+        if(!userFound){
+          //hashCost is a parameter that controls the hash speed
+          //higher hashCost => slower hash => more secure
+          const hashCost = 10;
+          //bcrypt automatically uses a random salt and prepends it to hash
+          bcrypt.hash(personal.hashedpass, hashCost, (err, hash) => {
+            Database.insertUser(username, hash, personal.name, personal.email)
+              .then( (inserted) => {
+                sendCert(response, true, setCookieID(username));
+              });
+          });
+        }
+        else
+          sendCert(response, false, null);
+      });
     }
   });
 }
