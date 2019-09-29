@@ -7,21 +7,24 @@ const dbConfig = {
   database: 'site_backend'
 }
 
-function rebuild() {
-// Builds the database using db_script.sql.
-  var execsql = require('execsql');
-  var dbConfigInitial = {
-    host: 'localhost',
-    user: 'root',
-    password: ''
-  };
-  var sqlFile = __dirname + '/db_script.sql';
+function userExists(username) {
+//Checks whether a user exists.
+  var sql =
+    'SELECT EXISTS (' +
+      'SELECT 1 ' +
+      'FROM tbl_users ' +
+      'WHERE Username = ?' +
+    ') AS User_Found;';
+  var con = mysql.createConnection(dbConfig);
+  var record;
 
-  execsql.config(dbConfigInitial)
-    .execFile(sqlFile, function(err, results){
-      if (err) throw err;
-      console.log('Database rebuilt.');
+  return new Promise(function(resolve, reject) {
+    con.query(sql, username, function(err, results) {
+      if (err) return reject(err);
+      record = results[0];
+      resolve(Boolean(record['User_Found']));
     });
+  });
 }
 
 function insertUser(username, hashedPass, name, email) {
@@ -59,10 +62,91 @@ function getHashedPassword(username) {
   });
 }
 
+function setSessionID(username, id) {
+//Sets the session ID for a user.
+  var sql =
+    'UPDATE tbl_users ' +
+    'SET Session_ID = ? ' +
+    'WHERE Username = ?;';
+  var con = mysql.createConnection(dbConfig);
+
+  return new Promise(function(resolve, reject) {
+    con.query(sql, [id, username], function(err, results) {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+}
+
+function sessionIDExists(id) {
+//Checks whether a session ID exists.
+  var sql =
+    'SELECT EXISTS (' +
+      'SELECT 1 ' +
+      'FROM tbl_users ' +
+      'WHERE Session_ID = ?' +
+    ') AS Session_ID_Found;';
+  var con = mysql.createConnection(dbConfig);
+  var record;
+
+  if (!id) id = '';
+  return new Promise(function(resolve, reject) {
+    con.query(sql, id, function(err, results) {
+      if (err) return reject(err);
+      record = results[0];
+      resolve(Boolean(record['Session_ID_Found']));
+    });
+  });
+}
+
+function getUsernameOfSessionID(id) {
+//Given a session ID, returns the associated username.
+  var sql =
+    'SELECT Username ' +
+    'FROM tbl_users ' +
+    'WHERE Session_ID = ?;';
+  var con = mysql.createConnection(dbConfig);
+  var record;
+  var username;
+
+  return new Promise(function(resolve, reject) {
+    con.query(sql, id, function(err, results) {
+      if (err) return reject(err);
+      record = results[0];
+      if (record) username = record['Username'];
+      resolve(username);
+    });
+  });
+}
+
+function deleteSessionID(id) {
+//Deletes a session ID.
+  var sql =
+    'UPDATE tbl_users ' +
+    'SET Session_ID = Null ' +
+    'WHERE Session_ID = ?;';
+  var con = mysql.createConnection(dbConfig);
+
+  return new Promise(function(resolve, reject) {
+    con.query(sql, id, function(err, results) {
+      if (err) return reject(err);
+      resolve();
+    });
+  });
+}
+
+sessionIDExists(undefined).then((found) => {
+  console.log(found);
+});
+
 Database = {
-  rebuild,
+  userExists,
   insertUser,
   getHashedPassword,
+  setSessionID,
+  sessionIDExists,
+  getUsernameOfSessionID,
+  deleteSessionID,
 }
 
 module.exports = Database;
