@@ -37,6 +37,20 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
+-- Table `site_backend`.`tbl_chatrooms`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `site_backend`.`tbl_chatrooms` ;
+
+CREATE TABLE IF NOT EXISTS `site_backend`.`tbl_chatrooms` (
+  `Chatroom_ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `Chatroom` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Chatroom_ID`),
+  UNIQUE INDEX `SECONDARY` (`Chatroom` ASC))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = latin1;
+
+-- -----------------------------------------------------
 -- Table `site_backend`.`tbl_messages`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `site_backend`.`tbl_messages` ;
@@ -47,9 +61,11 @@ CREATE TABLE IF NOT EXISTS `site_backend`.`tbl_messages` (
   `Recipient_ID` INT(11) NOT NULL,
   `Sent` DATETIME NOT NULL,
   `Body` TEXT NOT NULL,
+  `Chatroom_ID` INT(11) NOT NULL,
   PRIMARY KEY (`Message_ID`),
   UNIQUE INDEX `SECONDARY` (`Sender_ID` ASC, `Recipient_ID` ASC, `Sent` ASC),
   INDEX `fk_Recipient_User_idx` (`Recipient_ID` ASC),
+  INDEX `fk_Chatroom_idx` (`Chatroom_ID` ASC),
   CONSTRAINT `fk_Recipient_User`
     FOREIGN KEY (`Recipient_ID`)
     REFERENCES `site_backend`.`tbl_users` (`User_ID`)
@@ -59,10 +75,16 @@ CREATE TABLE IF NOT EXISTS `site_backend`.`tbl_messages` (
     FOREIGN KEY (`Sender_ID`)
     REFERENCES `site_backend`.`tbl_users` (`User_ID`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Chatroom`
+    FOREIGN KEY (`Chatroom_ID`)
+    REFERENCES `site_backend`.`tbl_chatrooms` (`Chatroom_ID`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = latin1;
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
