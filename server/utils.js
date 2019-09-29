@@ -31,15 +31,23 @@ function usernameOf(id) {
 }
 
 function logMessage(chatroomID, message) {
-  if (!(chatroomID in localDatabase))
-    localDatabase[chatroomID] = []
-  localDatabase[chatroomID].push(message);
-};
+  Database.insertChatroom(chatroomID).then( (inserted) => {
+    Database.getInternalChatroomID(chatroomID).then( (internalID) => {
+      Database.insertMessage(internalID, message).then( (results) => {
+        console.log('Message logged.')
+      });
+    });
+  });
+}
 
 function loggedMessages(chatroomID) {
-  if (!(chatroomID in localDatabase))
-    return [];
-  return localDatabase[chatroomID];
+  return new Promise( (resolve, reject) => {
+    Database.getInternalChatroomID(chatroomID).then( (internalID) => {
+      Database.getChatroomMessages(internalID).then( (messages) => {
+        resolve(messages);
+      });
+    });
+  });
 }
 
 /* cookie handling + auxiliary functions */
