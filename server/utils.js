@@ -43,9 +43,13 @@ function logMessage(chatroomID, message) {
 function loggedMessages(chatroomID) {
   return new Promise( (resolve, reject) => {
     Database.getInternalChatroomID(chatroomID).then( (internalID) => {
-      Database.getChatroomMessages(internalID).then( (messages) => {
-        resolve(messages);
-      });
+      if (!internalID) {
+        resolve([]);
+      } else {
+        Database.getChatroomMessages(internalID).then( (messages) => {
+          resolve(messages);
+        });
+      }
     });
   });
 }
