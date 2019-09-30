@@ -35,10 +35,7 @@ function userExists(username) {
       'WHERE Username = ?' +
     ') AS User_Found;';
 
-  return query(sql, username, rows => {
-    var row = rows[0];
-    return Boolean(row['User_Found']);
-  });
+  return query(sql, username, rows => Boolean(rows[0]['User_Found']));
 }
 
 function insertUser(username, hashedPass, name, email) {
@@ -57,10 +54,8 @@ function getHashedPassword(username) {
     'FROM tbl_users ' +
     'WHERE Username = ?;';
 
-  return query(sql, username, rows => {
-    var row = rows[0];
-    return row ? row['Hashed_Password'] : undefined;
-  });
+  return query(sql, username, rows =>
+    rows[0] ? rows[0]['Hashed_Password'] : undefined);
 }
 
 function chatroomExists(chatroomID) {
@@ -72,10 +67,7 @@ function chatroomExists(chatroomID) {
       'WHERE Chatroom = ?' +
     ') AS Chatroom_Found;';
 
-  return query(sql, chatroomID, rows => {
-    var row = rows[0];
-    return Boolean(row['Chatroom_Found']);
-  });
+  return query(sql, chatroomID, rows => Boolean(rows[0]['Chatroom_Found']));
 }
 
 function insertChatroom(chatroomID) {
@@ -94,10 +86,8 @@ function getInternalChatroomID(chatroomID) {
     'FROM tbl_chatrooms ' +
     'WHERE Chatroom = ?;';
 
-  return query(sql, chatroomID, rows => {
-    var row = rows[0];
-    return row ? row['Chatroom_ID'] : undefined;
-  });
+  return query(sql, chatroomID, rows =>
+    rows[0] ? rows[0]['Chatroom_ID'] : undefined);
 }
 
 function insertMessage(internalChatroomID, message) {
