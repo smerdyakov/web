@@ -6,6 +6,25 @@ const dbConfig = {
   password: '',
   database: 'site_backend'
 }
+var con = mysql.createConnection(dbConfig);
+
+/* 'query' wraps mysql's connection.query function. Accepts a query string,
+one or more query arguments (which will be safely escaped), and an
+'extractor' function that specifies what part of connection.query's
+callback results to return in a fulfilled promise.
+
+TO DO:
+  1. Make the extractor argument optional, defaulting to the identity function.
+  2. Make the query arguments optional. */
+
+function query(sql, args, extractor) {
+  return new Promise((resolve, reject) => {
+    con.query(sql, args, (err, results) => {
+      if (err) return reject(err);
+      resolve(extractor(results));
+    });
+  });
+}
 
 function userExists(username) {
 //Checks whether a user exists.
@@ -15,15 +34,10 @@ function userExists(username) {
       'FROM tbl_users ' +
       'WHERE Username = ?' +
     ') AS User_Found;';
-  var con = mysql.createConnection(dbConfig);
-  var record;
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, username, function(err, results) {
-      if (err) return reject(err);
-      record = results[0];
-      resolve(Boolean(record['User_Found']));
-    });
+  return query(sql, username, rows => {
+    var row = rows[0];
+    return Boolean(row['User_Found']);
   });
 }
 
@@ -32,14 +46,8 @@ function insertUser(username, hashedPass, name, email) {
   var sql =
     'INSERT INTO tbl_users (Username, Hashed_Password, Name, Email) ' +
     'VALUES (?, ?, ?, ?);';
-  var con = mysql.createConnection(dbConfig);
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, [username, hashedPass, name, email], function(err, results, fields) {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
+  return query(sql, [username, hashedPass, name, email], x => x);
 }
 
 function getHashedPassword(username) {
@@ -48,17 +56,10 @@ function getHashedPassword(username) {
     'SELECT Hashed_Password ' +
     'FROM tbl_users ' +
     'WHERE Username = ?;';
-  var con = mysql.createConnection(dbConfig);
-  var record;
-  var hashedPass;
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, username, function(err, results) {
-      if (err) return reject(err);
-      record = results[0];
-      if (record) hashedPass = record['Hashed_Password'];
-      resolve(hashedPass);
-    });
+  return query(sql, username, rows => {
+    var row = rows[0];
+    return row ? row['Hashed_Password'] : undefined;
   });
 }
 
@@ -70,15 +71,10 @@ function chatroomExists(chatroomID) {
       'FROM tbl_chatrooms ' +
       'WHERE Chatroom = ?' +
     ') AS Chatroom_Found;';
-  var con = mysql.createConnection(dbConfig);
-  var record;
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, chatroomID, function(err, results) {
-      if (err) return reject(err);
-      record = results[0];
-      resolve(Boolean(record['Chatroom_Found']));
-    });
+  return query(sql, chatroomID, rows => {
+    var row = rows[0];
+    return Boolean(row['Chatroom_Found']);
   });
 }
 
@@ -87,14 +83,8 @@ function insertChatroom(chatroomID) {
   var sql =
     'INSERT IGNORE INTO tbl_chatrooms (Chatroom) ' +
     'VALUES (?);';
-  var con = mysql.createConnection(dbConfig);
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, chatroomID, function(err, results, fields) {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
+  return query(sql, chatroomID, x => x);
 }
 
 function getInternalChatroomID(chatroomID) {
@@ -103,17 +93,10 @@ function getInternalChatroomID(chatroomID) {
     'SELECT Chatroom_ID ' +
     'FROM tbl_chatrooms ' +
     'WHERE Chatroom = ?;';
-  var con = mysql.createConnection(dbConfig);
-  var record;
-  var internalID;
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, chatroomID, function(err, results) {
-      if (err) return reject(err);
-      record = results[0];
-      if (record) internalID = record['Chatroom_ID'];
-      resolve(internalID);
-    });
+  return query(sql, chatroomID, rows => {
+    var row = rows[0];
+    return row ? row['Chatroom_ID'] : undefined;
   });
 }
 
@@ -122,14 +105,8 @@ function insertMessage(internalChatroomID, message) {
   var sql =
     'INSERT INTO tbl_messages (Chatroom_ID, Message) ' +
     'VALUES (?, ?);';
-  var con = mysql.createConnection(dbConfig);
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, [internalChatroomID, JSON.stringify(message)], function(err, results, fields) {
-      if (err) return reject(err);
-      resolve();
-    });
-  });
+  return query(sql, [internalChatroomID, JSON.stringify(message)], x => x);
 }
 
 function getChatroomMessages(internalChatroomID) {
@@ -138,15 +115,8 @@ function getChatroomMessages(internalChatroomID) {
     'SELECT Message ' +
     'FROM tbl_messages ' +
     'WHERE Chatroom_ID = ?;';
-  var con = mysql.createConnection(dbConfig);
-  var internalID;
 
-  return new Promise(function(resolve, reject) {
-    con.query(sql, internalChatroomID, function(err, results) {
-      if (err) return reject(err);
-      resolve(results);
-    });
-  });
+  return query(sql, internalChatroomID, x => x);
 }
 
 Database = {
