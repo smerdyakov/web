@@ -10,7 +10,7 @@
   "author": "Tyler Anderson, Kirk Hendricks",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "blakejs": "^1.1.0",
     "execsql": "0.0.3",
     "mysql": "^2.17.1",
